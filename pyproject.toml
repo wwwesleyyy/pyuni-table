@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "pyuni-table"
-version = "0.1.0"
-description = ""
-authors = ["Wesley Kincaid <wesley.kincaid@gmail.com>"]
+version = "0.0.1"
+description = "A Python library for storing, retrieving and indexing Pydantic models in DynamoDB."
+authors = ["Wes Kincaid <wesley.kincaid@gmail.com>"]
 readme = "README.md"
 packages = [{include = "pyuni_table"}]
 
