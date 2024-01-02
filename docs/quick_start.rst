@@ -9,7 +9,7 @@ Quick Start
 Installation
 ------------
 
-To use Pyuni Table, first install it using pip:
+To use PyuniTable, first install it using pip:
 
 .. code-block:: console
 
