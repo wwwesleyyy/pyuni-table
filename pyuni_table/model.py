@@ -8,4 +8,5 @@ class BaseModel(PydanticBaseModel):
     """
     An extension of Pydantic's BaseModel that adds an id field.
     """
+
     id: UUID = Field(default_factory=uuid4)

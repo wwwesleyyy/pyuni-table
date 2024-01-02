@@ -4,7 +4,7 @@ import boto3
 
 from pyuni_table.model import BaseModel
 
-T = TypeVar('T', bound=BaseModel)
+T = TypeVar("T", bound=BaseModel)
 
 
 class Table:
@@ -16,7 +16,7 @@ class Table:
 
     def __init__(self, table: str, region_name: str | None = None):
         self.name = table
-        self.client = boto3.client('dynamodb', region_name=region_name)
+        self.client = boto3.client("dynamodb", region_name=region_name)
 
     def create_table(self) -> None:
         """
@@ -24,36 +24,21 @@ class Table:
         """
         self.client.create_table(
             TableName=self.name,
-            BillingMode='PAY_PER_REQUEST',
+            BillingMode="PAY_PER_REQUEST",
             AttributeDefinitions=[
-                {
-                    'AttributeName': 'pk',
-                    'AttributeType': 'S'
-                },
-                {
-                    'AttributeName': 'sk',
-                    'AttributeType': 'S'
-                },
+                {"AttributeName": "pk", "AttributeType": "S"},
+                {"AttributeName": "sk", "AttributeType": "S"},
             ],
             KeySchema=[
-                {
-                    'AttributeName': 'sk',
-                    'KeyType': 'HASH'
-                },
-                {
-                    'AttributeName': 'pk',
-                    'KeyType': 'RANGE'
-                },
+                {"AttributeName": "sk", "KeyType": "HASH"},
+                {"AttributeName": "pk", "KeyType": "RANGE"},
             ],
         )
-        waiter = self.client.get_waiter('table_exists')
+        waiter = self.client.get_waiter("table_exists")
         waiter.wait(TableName=self.name)
         self.client.update_time_to_live(
             TableName=self.name,
-            TimeToLiveSpecification={
-                'Enabled': True,
-                'AttributeName': 'ttl'
-            }
+            TimeToLiveSpecification={"Enabled": True, "AttributeName": "ttl"},
         )
 
     def delete_table(self) -> None:
@@ -71,22 +56,14 @@ class Table:
         self.client.put_item(
             TableName=self.name,
             Item={
-                'pk': {
-                    'S': str(entity.id)
-                },
-                'sk': {
-                    'S': '!'
-                },
-                'data': {
-                    'S': entity.model_dump_json()
-                },
-                'model': {
-                    'S': entity.__class__.__name__
-                }
+                "pk": {"S": str(entity.id)},
+                "sk": {"S": "!"},
+                "data": {"S": entity.model_dump_json()},
+                "model": {"S": entity.__class__.__name__},
             },
-            ReturnValues='NONE',
-            ReturnConsumedCapacity='NONE',
-            ReturnItemCollectionMetrics='NONE',
+            ReturnValues="NONE",
+            ReturnConsumedCapacity="NONE",
+            ReturnItemCollectionMetrics="NONE",
         )
 
         # DynamoDB.Client.exceptions.ConditionalCheckFailedException
@@ -99,17 +76,9 @@ class Table:
 
     def get(self, cls: Type[T], entity_id: str) -> T:
         response = self.client.get_item(
-            TableName=self.name,
-            Key={
-                'pk': {
-                    'S': str(entity_id)
-                },
-                'sk': {
-                    'S': '!'
-                }
-            }
+            TableName=self.name, Key={"pk": {"S": str(entity_id)}, "sk": {"S": "!"}}
         )
-        return cls.model_validate_json(response['Item']['data']['S'])
+        return cls.model_validate_json(response["Item"]["data"]["S"])
 
         # DynamoDB.Client.exceptions.ConditionalCheckFailedException
         # DynamoDB.Client.exceptions.ProvisionedThroughputExceededException
