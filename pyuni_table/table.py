@@ -12,6 +12,7 @@ class Table:
     The primary interface to Pyuni Table.
 
     :param table: The name of the table in DynamoDB.
+    :param region_name: The AWS region to use. If not specified, the default region will be used.
     """
 
     def __init__(self, table: str, region_name: str | None = None):
@@ -75,6 +76,13 @@ class Table:
         # DynamoDB.Client.exceptions.InternalServerError
 
     def get(self, cls: Type[T], entity_id: str) -> T:
+        """
+        Get an entity from the table.
+
+        :param cls: The type of the entity to get.
+        :param entity_id: The ID of the entity to get.
+        :return: The entity
+        """
         response = self.client.get_item(
             TableName=self.name, Key={"pk": {"S": str(entity_id)}, "sk": {"S": "!"}}
         )
