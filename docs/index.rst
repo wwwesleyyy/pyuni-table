@@ -20,6 +20,7 @@ Contents
 
 .. toctree::
    quick_start
+   uniques
    api
 
 Indices and tables
