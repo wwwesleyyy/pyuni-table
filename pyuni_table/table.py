@@ -10,9 +10,9 @@ class Table:
     :param table: The name of the table in DynamoDB.
     """
 
-    def __init__(self, table: str):
+    def __init__(self, table: str, region_name: str | None = None):
         self.name = table
-        self.client = boto3.client('dynamodb')
+        self.client = boto3.client('dynamodb', region_name=region_name)
         self.models = dict()
 
     def create_table(self) -> None:

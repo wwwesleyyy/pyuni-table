@@ -6,7 +6,7 @@ from pyuni_table.table import Table
 @mock_dynamodb
 def test_table_create_table():
     table_name = 'test_table'
-    table = Table(table_name)
+    table = Table(table_name, region_name='us-east-1')
     table.create_table()
     assert table.client.describe_table(TableName=table_name)['Table']['TableStatus'] == 'ACTIVE'
 
@@ -14,7 +14,7 @@ def test_table_create_table():
 @mock_dynamodb
 def test_table_delete_table():
     table_name = 'test_table'
-    table = Table(table_name)
+    table = Table(table_name, region_name='us-east-1')
     table.create_table()
     table.delete_table()
     waiter = table.client.get_waiter('table_not_exists')

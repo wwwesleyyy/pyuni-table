@@ -18,6 +18,6 @@ def table_name():
 @pytest.fixture()
 def table(table_name):
     with mock_dynamodb():
-        table = Table(table_name)
+        table = Table(table_name, region_name='us-east-1')
         table.create_table()
         yield table
