@@ -9,3 +9,7 @@ The PyuniTable API
 .. automodule:: pyuni_table.table
    :members:
    :undoc-members:
+
+.. automodule:: pyuni_table.model
+   :members:
+   :undoc-members:

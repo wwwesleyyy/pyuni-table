@@ -1,6 +1,10 @@
+from typing import Type, TypeVar
+
 import boto3
 
 from pyuni_table.model import BaseModel
+
+T = TypeVar('T', bound=BaseModel)
 
 
 class Table:
@@ -13,7 +17,6 @@ class Table:
     def __init__(self, table: str, region_name: str | None = None):
         self.name = table
         self.client = boto3.client('dynamodb', region_name=region_name)
-        self.models = dict()
 
     def create_table(self) -> None:
         """
@@ -59,20 +62,6 @@ class Table:
         """
         self.client.delete_table(TableName=self.name)
 
-    def model(self):
-        """
-        Decorator to register a model with the table.
-
-        :return: The model.
-        """
-        def decorator(cls):
-            self.models[cls.__name__] = cls
-            return cls
-
-        return decorator
-
-        # Check for ID field
-
     def save(self, entity: BaseModel) -> None:
         """
         Save an entity to the table.
@@ -108,7 +97,7 @@ class Table:
         # DynamoDB.Client.exceptions.RequestLimitExceeded
         # DynamoDB.Client.exceptions.InternalServerError
 
-    def get(self, entity_id: str) -> BaseModel:
+    def get(self, cls: Type[T], entity_id: str) -> T:
         response = self.client.get_item(
             TableName=self.name,
             Key={
@@ -120,7 +109,6 @@ class Table:
                 }
             }
         )
-        cls = self.models[response['Item']['model']['S']]
         return cls.model_validate_json(response['Item']['data']['S'])
 
         # DynamoDB.Client.exceptions.ConditionalCheckFailedException

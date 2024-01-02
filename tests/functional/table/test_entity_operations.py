@@ -2,7 +2,6 @@ from pyuni_table.model import BaseModel
 
 
 def test_save(table, client):
-    @table.model()
     class Example(BaseModel):
         str_field: str
         int_field: int
@@ -27,7 +26,6 @@ def test_save(table, client):
 
 
 def test_get(table, client):
-    @table.model()
     class Example(BaseModel):
         str_field: str
         int_field: int
@@ -52,5 +50,5 @@ def test_get(table, client):
         }
     )
 
-    result = table.get(example.id)
+    result = table.get(Example, example.id)
     assert result == example
