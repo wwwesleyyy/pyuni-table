@@ -7,7 +7,7 @@ from pyuni_table.table import Table
 
 @pytest.fixture()
 def client():
-    return boto3.client('dynamodb')
+    return boto3.client('dynamodb', region_name='us-east-1')
 
 
 @pytest.fixture()
