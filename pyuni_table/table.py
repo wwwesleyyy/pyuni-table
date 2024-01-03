@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Type, TypeVar
+from typing import Callable, Type, TypeVar
 
 import boto3
 
@@ -19,7 +19,7 @@ class Table:
     def __init__(self, table: str, region_name: str | None = None):
         self.name = table
         self.client = boto3.client("dynamodb", region_name=region_name)
-        self.unique_indexes = defaultdict(set)
+        self.unique_indexes: dict[str, set[str]] = defaultdict(set)
 
     def create_table(self) -> None:
         """
@@ -44,7 +44,12 @@ class Table:
             TimeToLiveSpecification={"Enabled": True, "AttributeName": "ttl"},
         )
 
-    def unique(self, field):
+    def unique(self, field: str) -> Callable:
+        """
+        Decorator to mark a field as unique.
+
+        :param field: The field to mark as unique.
+        """
         def decorator(cls):
             self.unique_indexes[cls.__name__].add(field)
             return cls
