@@ -1,4 +1,4 @@
-The Pyuni Table Documentation
+The PyuniTable Documentation
 =======================================
 
 .. warning::
@@ -6,7 +6,7 @@ The Pyuni Table Documentation
     This library is still in early development and is not ready for
     production use.
 
-**Pyuni Table** is a Python library for storing, retrieving and indexing
+**PyuniTable** is a Python library for storing, retrieving and indexing
 `Pydantic <https://docs.pydantic.dev/latest/>`_ models in `DynamoDB <https://aws.amazon.com/pm/dynamodb/>`_. Pyuni
 supports queries and unique constraints on any model field with a simple decorator. Relationships, too! Queries against
 any index, relationship or aggregation can be done in a single trip to the database. And everything is stored in a
@@ -20,6 +20,7 @@ Contents
 
 .. toctree::
    quick_start
+   uniques
    api
 
 Indices and tables

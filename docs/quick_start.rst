@@ -9,7 +9,7 @@ Quick Start
 Installation
 ------------
 
-To use Pyuni Table, first install it using pip:
+To use PyuniTable, first install it using pip:
 
 .. code-block:: console
 
@@ -41,7 +41,6 @@ field for you.  Other than that, it's just a Pydantic ``BaseModel``.
 
     from puni import BaseModel
 
-    @table.model()
     class User(BaseModel):
         name: str
         email: str
@@ -57,15 +56,11 @@ And retrieve, update and destroy them.
 
 .. code-block:: python
 
-    user = table.get(1)
-
+    user = table.get(User, 1)
     user.name = 'Jane Doe'
     user.email = 'jane.doe@example.com'
-
     table.save(user)
-
-    user = table.get(1)
-
+    user = table.get(User, 1)
     table.delete(user.id)
 
 Once you're done, you can delete the table just as you'd expect.
