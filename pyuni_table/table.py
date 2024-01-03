@@ -153,14 +153,11 @@ class Table:
         }
         return item_set
 
-    def build_transactions(self, item_set: ItemTransitionSet, current: BaseModel) -> set:
+    def build_transactions(
+        self, item_set: ItemTransitionSet, current: BaseModel
+    ) -> set:
         puts = [
-            {
-                "Put": {
-                    "TableName": self.name,
-                    "Item": entity
-                }
-            }
+            {"Put": {"TableName": self.name, "Item": entity}}
             for entity in item_set.to_create | item_set.to_update
         ]
         deletes = [
